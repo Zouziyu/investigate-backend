@@ -15,5 +15,6 @@ public interface ChoiceMapper {
     @Insert("insert into choice (id, content, nextChoice) values (#{id},#{content},#{nextChoice})")
     void insertChoice(long id, String content, long nextChoice);
 
-
+    @Select("select max(id) from choice;")
+    long getLastId();
 }

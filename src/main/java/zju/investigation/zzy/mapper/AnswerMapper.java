@@ -15,5 +15,6 @@ public interface AnswerMapper {
     @Insert("insert into answer (id, answerContent, nextid) values (#{id},#{answerContent},#{nextid})")
     void insertAnswer(long id, String answerContent, long nextid);
 
-
+    @Select("select max(*) from answer")
+    long getLastId();
 }

@@ -8,12 +8,15 @@ import zju.investigation.zzy.dto.Question;
 @Mapper
 public interface QuestionMapper {
 
-    @Select("select * from #{type} where id = #{id}")
-    Question getCurrentQuestion(String type, long id);
+    @Select("select * from question where id = #{id}")
+    Question getCurrentQuestion(long id);
 
-    @Insert("insert into Question (id, nextid, nextChoice, title) values (#{id},#{nextid},#{nextChoice}),#{title}")
-    void insertCurrentQuestion(Question question);
+    @Insert("insert into question (id, nextId, type, choiceId) values (#{id},#{nextId},#{type}),#{choiceId}")
+    void insertQuestion(Question question);
 
-    @Select("select max(id) from #{type}")
-    long getLastId(String type);
+    @Insert("insert into #{type} (id, title) values (#{id},#{title}")
+    void insertQuestionByType(Question question);
+
+    @Select("select max(id) from question")
+    long getLastId();
 }

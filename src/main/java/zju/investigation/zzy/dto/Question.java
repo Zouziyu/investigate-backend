@@ -7,9 +7,9 @@ import java.util.ArrayList;
 @Data
 public class Question {
     long id;
+    long nextId;
     String title;
     String type;
-    long nextid;
-    long nextChoice;
-    ArrayList<Choice> choices;
+    long choiceId;
+    ArrayList<String> choices;
 }

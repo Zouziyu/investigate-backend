@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Answer {
     long id;
-    String answerContent;
+    String content;
     long nextid;
 }

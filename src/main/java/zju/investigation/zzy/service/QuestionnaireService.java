@@ -10,9 +10,7 @@ import zju.investigation.zzy.mapper.QuestionMapper;
 import zju.investigation.zzy.mapper.QuestionnaireMapper;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class QuestionnaireService {
@@ -31,55 +29,55 @@ public class QuestionnaireService {
     @Value("${spring.questionTypes}")
     private ArrayList<String> questionTypes;
 
-    QuestionNaire getQuestionnaireInfo(long id) {
+    public QuestionNaire getQuestionnaireInfo(long id) {
+        // 根据Id获取问卷内容
         QuestionNaire questionnaire = questionnaireMapper.getQuestionnaireByID(id);
         ArrayList<Question> questions = new ArrayList<>();
-        ArrayList<Choice> choices = new ArrayList<>();
+        ArrayList<String> choices = new ArrayList<>();
+
+        // 获取下一个问卷的内容
         long nextid = questionnaire.getNextid();
         while (nextid != End) {
-            // 解析问题的类型
-            String s = String.valueOf(nextid);
-            int t = Integer.parseInt(s.substring(0, 1));
-            long nextQuestionId = Long.parseLong(s.substring(1));
-            String type = questionTypes.get(t);
-
-            Question question = questionMapper.getCurrentQuestion(type, nextQuestionId);
-            // 解析当前的选项
-            long nextChoiceId = question.getNextChoice();
+            Question question = questionMapper.getCurrentQuestion(nextid);
+            long nextChoiceId = question.getChoiceId();
+            // 获取下一个选项的内容
             while (nextChoiceId != End) {
                 Choice choice = choiceMapper.getChoice(nextChoiceId);
-                choices.add(choice);
+                choices.add(choice.getContent());
                 nextChoiceId = choice.getNextChoice();
             }
-            // 保存当前选项
             question.setChoices(choices);
             choices.clear();
             questions.add(question);
         }
+        //设置问卷的问题内容
         questionnaire.setQuestions(questions);
         return questionnaire;
     }
 
-    boolean setQuestionnaireInfo(QuestionNaire questionNaire) {
+    public boolean setQuestionnaireInfo(QuestionNaire questionNaire) {
         ArrayList<Question> questions = questionNaire.getQuestions();
-        Iterator questionIterator = questions.iterator();
-        while (questionIterator.hasNext()) {
-            Question currentQuestion = (Question) questionIterator.next();
+        Collections.reverse(questions);
+        long nextQuestionId = -1;
+        for (Question question : questions) {
+            long currentQuestionId = questionMapper.getLastId() + 1;
+            question.setId(currentQuestionId);
+            ArrayList<String> choices = question.getChoices();
 
+            Collections.reverse(choices);
+            long nextChoiceId = -1;
+            for (String choice : choices) {
+                long currentChoiceId = choiceMapper.getLastId() + 1;
+                choiceMapper.insertChoice(currentChoiceId, choice, nextChoiceId);
+                nextChoiceId = currentChoiceId;
+            }
+
+            question.setChoiceId(nextChoiceId);
+            question.setNextId(nextQuestionId);
+            nextQuestionId = currentQuestionId;
+            questionMapper.insertQuestionByType(question);
+            questionMapper.insertQuestion(question);
         }
-//        for (int i = 0, j = 1; j < questions.size(); i++, j++) {
-//            Question current_question = questions.get(i);
-//            Question next_question = questions.get(j);
-//            long current_newId = questionMapper.getLastId(current_question.getType());
-//            long next_newId = questionMapper.getLastId(current_question.getType());
-//            if (next_newId == current_newId) {
-//                next_newId += 1;
-//            }
-//            ArrayList<Choice> choices = current_question.getChoices();
-//            for(int ci = 0)
-//            current_question.setId(current_newId);
-//            current_question.setNextid(next_newId);
-//            questionMapper.insertCurrentQuestion(current_question);
-//        }
+        return true;
     }
 }

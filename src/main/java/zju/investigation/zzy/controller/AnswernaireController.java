@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zju.investigation.zzy.dto.Question;
 import zju.investigation.zzy.dto.QuestionNaire;
-import zju.investigation.zzy.mapper.QuestionMapper;
 import zju.investigation.zzy.service.QuestionnaireService;
 
 import javax.annotation.Resource;
@@ -15,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 @RestController
-public class QuestionnaireController {
+public class AnswernaireController {
     @Resource
     private QuestionnaireService questionnaireService;
 
