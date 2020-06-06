@@ -23,7 +23,7 @@ public class AnswernaireService {
     @Value("${spring.questionTypes}")
     private ArrayList<String> questionTypes;
 
-    ArrayList<String> getAnswerNaireInfo(String email, long id) {
+    public ArrayList<String> getAnswerNaireInfo(String email, long id) {
         // 根据Id获取答卷内容
         AnswerNaire answerNaire = answerNaireMapper.getAnswerNaireById(email, id);
 
@@ -40,7 +40,7 @@ public class AnswernaireService {
         return answers;
     }
 
-    boolean setAnswernaireInfo(AnswerNaire answerNaire, ArrayList<String> answers) {
+    public boolean setAnswernaireInfo(AnswerNaire answerNaire, ArrayList<String> answers) {
         Collections.reverse(answers);
         long nextAnswerId = -1;
         for (String answer : answers) {

@@ -20,11 +20,11 @@ public class QuestionnaireController {
     private QuestionnaireService questionnaireService;
 
     @PostMapping(value = "/setQuestion")
-    public Boolean register(@RequestParam("title") String title,
-                            @RequestParam("email") String email,
-                            @RequestParam("title") String content,
-                            @RequestParam("deadTime") String deadTime,
-                            @RequestParam("questions") ArrayList<Question> quesions) throws NoSuchAlgorithmException, ParseException {
+    public Boolean setQuestion(@RequestParam("title") String title,
+                               @RequestParam("email") String email,
+                               @RequestParam("title") String content,
+                               @RequestParam("deadTime") String deadTime,
+                               @RequestParam("questions") ArrayList<Question> quesions) throws NoSuchAlgorithmException, ParseException {
         QuestionNaire questionNaire = new QuestionNaire();
         questionNaire.setCreateTime(System.currentTimeMillis());
         questionNaire.setQuestions(quesions);
@@ -38,7 +38,7 @@ public class QuestionnaireController {
     }
 
     @PostMapping(value = "/getQuestion")
-    public QuestionNaire register(long id) throws NoSuchAlgorithmException {
+    public QuestionNaire getQuestion(long id) throws NoSuchAlgorithmException {
         QuestionNaire questionnaireInfo = questionnaireService.getQuestionnaireInfo(id);
         return questionnaireInfo;
     }
