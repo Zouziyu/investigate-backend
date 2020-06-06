@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class AnswerNaire {
     long id;
     String email;
+    String address;
     long nextid;
-    long createTime;
+    String createTime;
 }

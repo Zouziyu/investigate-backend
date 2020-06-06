@@ -11,9 +11,18 @@ public interface AnswerNaireMapper {
     @Insert("insert into answernaire (id, email, nextid, createTime) values (#{id},#{email},#{nextid},#{createTime})")
     void insertAnswernaire(AnswerNaire answerNaire);
 
-    @Select("select last_insert_id() from questionnaire")
+    @Select("select max(id) from questionnaire")
     long getLastId();
 
-    @Select("select * from questionnaire where id = #{id} and email = #{email}")
+    @Select("select * from answernaire where id = #{id} and email = #{email}")
     AnswerNaire getAnswerNaireById(String email, long id);
+
+    @Select("select count(*) from answernaire where id = #{id}")
+    int getAnswerCount(long id);
+
+    @Select("select count(*) from answernaire where id = #{id} and address = #{address}")
+    int getAnswerCountByIp(String address, long id);
+
+    @Select("select * from answernaire where to_days(createTime) = to_days(now()) and id = #{id};")
+    int getDailyAnswerCount(long id);
 }

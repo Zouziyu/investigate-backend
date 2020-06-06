@@ -19,6 +19,9 @@ public class QuestionnaireController {
     @Resource
     private QuestionnaireService questionnaireService;
 
+    @Resource
+    private QuestionMapper questionMapper;
+
     @PostMapping(value = "/setQuestion")
     public Boolean setQuestion(@RequestParam("title") String title,
                                @RequestParam("email") String email,
@@ -41,5 +44,12 @@ public class QuestionnaireController {
     public QuestionNaire getQuestion(long id) throws NoSuchAlgorithmException {
         QuestionNaire questionnaireInfo = questionnaireService.getQuestionnaireInfo(id);
         return questionnaireInfo;
+    }
+
+    @PostMapping(value = "/setQuestionNumber")
+    public Boolean setQuestion(@RequestParam("id") long id,
+                               @RequestParam("number") int number) throws NoSuchAlgorithmException, ParseException {
+        questionMapper.setQuestionNumber(id,number);
+        return true;
     }
 }
