@@ -6,5 +6,5 @@ import lombok.Data;
 public class Choice {
     long id;
     String content;
-    long nextid;
+    long nextChoice;
 }

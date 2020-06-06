@@ -3,13 +3,17 @@ package zju.investigation.zzy.dto;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Data
-public class Question {
+public class QuestionNaire {
     long id;
     String title;
-    String type;
+    String content;
+    long createTime;
+    long deadTime;
+    String email;
     long nextid;
-    long nextChoice;
+    ArrayList<Question> questions;
     ArrayList<Choice> choices;
 }

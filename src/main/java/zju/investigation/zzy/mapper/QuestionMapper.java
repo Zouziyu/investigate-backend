@@ -11,8 +11,9 @@ public interface QuestionMapper {
     @Select("select * from #{type} where id = #{id}")
     Question getCurrentQuestion(String type, long id);
 
-    @Insert("insert into Question (id, nextid, nextChoice) values (#{id},#{nextid},#{nextChoice})")
-    void insertCurrentQuestion(long id, long nextid, String nextChoice);
+    @Insert("insert into Question (id, nextid, nextChoice, title) values (#{id},#{nextid},#{nextChoice}),#{title}")
+    void insertCurrentQuestion(Question question);
 
-
+    @Select("select max(id) from #{type}")
+    long getLastId(String type);
 }
