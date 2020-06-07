@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zju.investigation.zzy.dto.AnswerNaire;
 import zju.investigation.zzy.dto.Message;
+import zju.investigation.zzy.interceptor.AuthToken;
 import zju.investigation.zzy.mapper.AnswerNaireMapper;
 import zju.investigation.zzy.mapper.QuestionMapper;
 import zju.investigation.zzy.service.AnswernaireService;
@@ -86,7 +87,7 @@ public class AnswernaireController {
         return message;
     }
 
-
+    @AuthToken
     @PostMapping(value = "/setAnswer")
     public boolean setAnswer(@RequestParam("id") long id,
                              @Param("email") String email,

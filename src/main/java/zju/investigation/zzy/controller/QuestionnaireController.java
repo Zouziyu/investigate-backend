@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 @RestController
 public class QuestionnaireController {
@@ -22,6 +23,7 @@ public class QuestionnaireController {
     @Resource
     private QuestionMapper questionMapper;
 
+
     @PostMapping(value = "/setQuestion")
     public Boolean setQuestion(@RequestParam("title") String title,
                                @RequestParam("email") String email,
@@ -29,14 +31,14 @@ public class QuestionnaireController {
                                @RequestParam("deadTime") String deadTime,
                                @RequestParam("questions") ArrayList<Question> quesions) throws NoSuchAlgorithmException, ParseException {
         QuestionNaire questionNaire = new QuestionNaire();
-        questionNaire.setCreateTime(System.currentTimeMillis());
+        Date d = new Date();
+        SimpleDateFormat createTime = new SimpleDateFormat("yyyy-MM-dd");
+        questionNaire.setCreateTime(createTime.format(d));
         questionNaire.setQuestions(quesions);
         questionNaire.setContent(content);
         questionNaire.setEmail(email);
         questionNaire.setTitle(title);
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-        long lDeadTime = dateformat.parse(deadTime).getTime();
-        questionNaire.setDeadTime(lDeadTime);
+        questionNaire.setDeadTime(deadTime);
         return questionnaireService.setQuestionnaireInfo(questionNaire);
     }
 
@@ -49,7 +51,7 @@ public class QuestionnaireController {
     @PostMapping(value = "/setQuestionNumber")
     public Boolean setQuestion(@RequestParam("id") long id,
                                @RequestParam("number") int number) throws NoSuchAlgorithmException, ParseException {
-        questionMapper.setQuestionNumber(id,number);
+        questionMapper.setQuestionNumber(id, number);
         return true;
     }
 }

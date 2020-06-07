@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import zju.investigation.zzy.dto.*;
+import zju.investigation.zzy.interceptor.AuthToken;
 import zju.investigation.zzy.mapper.AnswerNaireMapper;
 import zju.investigation.zzy.mapper.QuestionnaireMapper;
 import zju.investigation.zzy.service.AnswernaireService;
@@ -27,6 +28,7 @@ public class StatisticsController {
     @Resource
     private AnswerNaireMapper answerNaireMapper;
 
+    @AuthToken
     @PostMapping(value = "/statisticQuestionInfo")
     public Statistics statisticsQuestionInfo(@RequestParam("id") long id) throws NoSuchAlgorithmException {
         Statistics statistic = questionnaireMapper.getStatisticById(id);
@@ -49,6 +51,7 @@ public class StatisticsController {
         return statistic;
     }
 
+    @AuthToken
     @PostMapping(value = "/statisticReign")
     public GeometryAddress statisticsReign(@RequestParam("id") long id) throws NoSuchAlgorithmException {
         ArrayList<String> reigns = answerNaireMapper.getAllreigns(id);
