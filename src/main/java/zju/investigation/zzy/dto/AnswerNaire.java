@@ -11,4 +11,5 @@ public class AnswerNaire {
     String address;
     long nextid;
     String createTime;
+    String geometry;
 }

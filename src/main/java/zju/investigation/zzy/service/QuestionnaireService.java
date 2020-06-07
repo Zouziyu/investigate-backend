@@ -10,6 +10,7 @@ import zju.investigation.zzy.mapper.QuestionMapper;
 import zju.investigation.zzy.mapper.QuestionnaireMapper;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -56,14 +57,16 @@ public class QuestionnaireService {
     }
 
     public boolean setQuestionnaireInfo(QuestionNaire questionNaire) {
+        // 逆转Questions 方便nextId的获取
         ArrayList<Question> questions = questionNaire.getQuestions();
         Collections.reverse(questions);
         long nextQuestionId = -1;
+        // 遍历每一个Question
         for (Question question : questions) {
             long currentQuestionId = questionMapper.getLastId() + 1;
             question.setId(currentQuestionId);
             ArrayList<String> choices = question.getChoices();
-
+            // 逆转Choices 方便nextId的获取
             Collections.reverse(choices);
             long nextChoiceId = -1;
             for (String choice : choices) {
@@ -75,9 +78,13 @@ public class QuestionnaireService {
             question.setChoiceId(nextChoiceId);
             question.setNextId(nextQuestionId);
             nextQuestionId = currentQuestionId;
+            // 存储相应的Question
             questionMapper.insertQuestionByType(question);
             questionMapper.insertQuestion(question);
         }
+
+        questionNaire.setCreateTime(LocalDate.now().toString());
+        questionnaireMapper.insertQuestionnaire(questionNaire);
         return true;
     }
 }

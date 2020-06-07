@@ -13,13 +13,11 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-@Api(tags = "登录")
 @RestController
 public class LoginController {
     @Resource
     private UserMapper userMapper;
 
-    @ApiOperation("普通登录")
     @PostMapping(value = "/login")
     public Boolean login(@RequestParam("email") String email,
                          @RequestParam("password") String password) throws NoSuchAlgorithmException {

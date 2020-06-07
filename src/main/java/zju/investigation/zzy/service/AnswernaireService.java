@@ -24,7 +24,6 @@ public class AnswernaireService {
     private ArrayList<String> questionTypes;
 
     public ArrayList<String> getAnswerNaireInfo(String email, long id) {
-        // 根据Id获取答卷内容
         AnswerNaire answerNaire = answerNaireMapper.getAnswerNaireById(email, id);
 
         ArrayList<String> answers = new ArrayList<>();
@@ -44,7 +43,7 @@ public class AnswernaireService {
         Collections.reverse(answers);
         long nextAnswerId = -1;
         for (String answer : answers) {
-            long currentChoiceId = answerMapper.getLastId() + 1;
+            long currentChoiceId = answerNaireMapper.getLastId() + 1;
             answerMapper.insertAnswer(currentChoiceId, answer, nextAnswerId);
             nextAnswerId = currentChoiceId;
         }
@@ -52,4 +51,25 @@ public class AnswernaireService {
         answerNaireMapper.insertAnswernaire(answerNaire);
         return true;
     }
+
+    public ArrayList<ArrayList<String>> listAllAnswerInfo(long id) {
+        ArrayList<Long> answerIds = answerNaireMapper.getAllanswers(id);
+        ArrayList<ArrayList<String>> allAnswers = new ArrayList<>();
+        for (Long answerId : answerIds) {
+            int index = 0;
+            long nextAnswerId = answerId;
+            while (nextAnswerId != End) {
+                Answer answer = answerMapper.getAnswer(nextAnswerId);
+                nextAnswerId = answer.getNextid();
+                String content = answer.getContent();
+                if (allAnswers.get(index) == null) {
+                    allAnswers.add(index, new ArrayList<>());
+                }
+                allAnswers.get(index).add(content);
+                index = index + 1;
+            }
+        }
+        return allAnswers;
+    }
+
 }

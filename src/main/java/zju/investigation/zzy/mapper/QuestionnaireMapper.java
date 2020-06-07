@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Select;
 import org.mapstruct.Mapper;
 import zju.investigation.zzy.dto.Question;
 import zju.investigation.zzy.dto.QuestionNaire;
+import zju.investigation.zzy.dto.Statistics;
 
 @Mapper
 public interface QuestionnaireMapper {
@@ -12,8 +13,11 @@ public interface QuestionnaireMapper {
     QuestionNaire getQuestionnaireByID(long id);
 
     @Insert("insert into questionnaire (id, title, content, createTime, deadTime, email, nextid) values (#{id},#{title},#{content},#{createTime},#{deadTime},#{email},#{nextid})")
-    void insertQuestionnaire(long id, String title, String content, long createTime, long deadTime, String email, long nextid);
+    void insertQuestionnaire(QuestionNaire questionNaire);
 
     @Select("select last_insert_id() from questionnaire")
     long getLastId();
+
+    @Select("select * from questionnaire where id = #{id}")
+    Statistics getStatisticById(long id);
 }

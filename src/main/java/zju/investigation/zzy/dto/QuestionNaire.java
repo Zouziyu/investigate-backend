@@ -10,8 +10,8 @@ public class QuestionNaire {
     long id;
     String title;
     String content;
-    long createTime;
-    long deadTime;
+    String createTime;
+    String deadTime;
     String email;
     long nextid;
     ArrayList<Question> questions;
